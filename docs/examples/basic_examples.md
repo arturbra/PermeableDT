@@ -17,7 +17,7 @@ This section provides simple, complete examples for common permeabledt use cases
 This example shows how to run a basic water flow simulation with synthetic data.
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
@@ -92,7 +92,7 @@ print(f"  Total rainfall: {np.sum(rainfall_mm_min):.1f} mm")
 print(f"  Peak intensity: {np.max(rainfall_mm_min):.3f} mm/min")
 
 # Run simulation
-data, water_balance = gdt.run_simulation(params, qin, qrain, emax)
+data, water_balance = pdt.run_simulation(params, qin, qrain, emax)
 
 # Display results
 print(f"\nSimulation results:")
@@ -104,7 +104,7 @@ print(f"  Final ponding: {data['hp'][-1]:.4f} m")
 print(f"  Final soil moisture: {data['s'][-1]:.3f}")
 
 # Save results
-df = gdt.results_dataframe(data, save=True, filename="basic_simulation.csv")
+df = pdt.results_dataframe(data, save=True, filename="basic_simulation.csv")
 print(f"\nResults saved to: basic_simulation.csv")
 ```
 
@@ -129,7 +129,7 @@ Simulation results:
 This example demonstrates parameter calibration using synthetic observed data.
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
@@ -241,13 +241,13 @@ def create_calibration_data():
         rainfall_files.append(rainfall_file)
 
         # Simulate "observed" outflow (with noise)
-        setup = gdt.read_setup_file("calibration_setup.ini")
-        params = gdt.initialize_parameters(setup)
+        setup = pdt.read_setup_file("calibration_setup.ini")
+        params = pdt.initialize_parameters(setup)
         qin = np.zeros(timesteps)
         qrain = intensity * params['area'] / (1000 * 60)
         emax = np.zeros(timesteps)
 
-        sim_data, _ = gdt.run_simulation(params, qin, qrain, emax)
+        sim_data, _ = pdt.run_simulation(params, qin, qrain, emax)
 
         # Add realistic noise to create "observations"
         true_outflow = np.array(sim_data['Qpipe']) * 35.315  # Convert to ft³/s
@@ -280,7 +280,7 @@ def run_calibration_example():
 
     try:
         # Run calibration
-        best_params, calibrated_setup, logbook = gdt.run_calibration(
+        best_params, calibrated_setup, logbook = pdt.run_calibration(
             calibration_rainfall=rainfall_files,
             calibration_observed_data=observed_files,
             setup_file=setup_file,
@@ -293,7 +293,7 @@ def run_calibration_example():
         print(f"Best fitness: {best_params.fitness.values[0]:.4f}")
 
         # Show parameter changes
-        original_setup = gdt.read_setup_file(setup_file)
+        original_setup = pdt.read_setup_file(setup_file)
         print(f"\nParameter improvements:")
 
         calib_params = ['Ks', 'sw', 'sfc', 'Cd', 'eta']
@@ -329,7 +329,7 @@ if __name__ == "__main__":
 This example shows how to set up and run a basic particle filter forecast.
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
@@ -358,19 +358,19 @@ def basic_particle_filter_example():
 
     # 2. Setup file (use calibrated if available, otherwise create basic)
     try:
-        setup = gdt.read_setup_file("calibrated_parameters.ini")
+        setup = pdt.read_setup_file("calibrated_parameters.ini")
         setup_file = "calibrated_parameters.ini"
     except FileNotFoundError:
         setup_file = create_setup_file("pf_setup.ini")
-        setup = gdt.read_setup_file(setup_file)
+        setup = pdt.read_setup_file(setup_file)
 
     # 3. Generate "observed" outflow
-    params = gdt.initialize_parameters(setup)
+    params = pdt.initialize_parameters(setup)
     qin = np.zeros(timesteps)
     qrain = rainfall_mm * params['area'] / (1000 * 60)
     emax = np.zeros(timesteps)
 
-    sim_data, _ = gdt.run_simulation(params, qin, qrain, emax)
+    sim_data, _ = pdt.run_simulation(params, qin, qrain, emax)
     true_outflow = np.array(sim_data['Qpipe']) * 35.315  # ft³/s
 
     # Add noise for realistic observations
@@ -496,7 +496,7 @@ if __name__ == "__main__":
 This example demonstrates how to run a basic sensitivity analysis.
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import numpy as np
 
 def quick_sensitivity_example():
@@ -507,7 +507,7 @@ def quick_sensitivity_example():
     # Create setup file if needed
     try:
         setup_file = "calibrated_parameters.ini"
-        gdt.read_setup_file(setup_file)
+        pdt.read_setup_file(setup_file)
     except FileNotFoundError:
         setup_file = create_setup_file("sensitivity_setup.ini")
 
@@ -532,7 +532,7 @@ def quick_sensitivity_example():
 
     try:
         # Initialize sensitivity analysis
-        sa = gdt.SobolSensitivityAnalysis(
+        sa = pdt.SobolSensitivityAnalysis(
             setup_file=setup_file,
             rainfall_file=rainfall_file
         )
@@ -586,7 +586,7 @@ if __name__ == "__main__":
 This example shows how to integrate HRRR weather forecast data.
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 from datetime import datetime
 
 def weather_integration_example():
@@ -597,7 +597,7 @@ def weather_integration_example():
     try:
         # Initialize HRRR downloader
         # Example coordinates for Salt Lake City, UT
-        downloader = gdt.HRRRAccumulatedPrecipitationDownloader(
+        downloader = pdt.HRRRAccumulatedPrecipitationDownloader(
             lat=40.7589,
             lon=-111.8883,
             timezone='US/Mountain'
@@ -654,7 +654,7 @@ if __name__ == "__main__":
 This example demonstrates basic plotting capabilities.
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import numpy as np
 
 def plotting_example():
@@ -663,7 +663,7 @@ def plotting_example():
     print("Plotting example...")
 
     # Check if plotting is available
-    if gdt.plots is None:
+    if pdt.plots is None:
         print("Plotting requires matplotlib. Install with: pip install permeabledt[plots]")
         return False
 
@@ -696,28 +696,28 @@ def plotting_example():
 
         # Generate corresponding outflow data
         try:
-            setup = gdt.read_setup_file("calibrated_parameters.ini")
+            setup = pdt.read_setup_file("calibrated_parameters.ini")
         except FileNotFoundError:
             setup_file = create_setup_file("plot_setup.ini")
-            setup = gdt.read_setup_file(setup_file)
+            setup = pdt.read_setup_file(setup_file)
 
-        params = gdt.initialize_parameters(setup)
+        params = pdt.initialize_parameters(setup)
 
         # Read rainfall and simulate
-        rain_df = gdt.read_rainfall_dat_file(rainfall_file)
+        rain_df = pdt.read_rainfall_dat_file(rainfall_file)
         rainfall_mm = rain_df['rain'].values * 25.4  # Convert to mm
 
         qin = np.zeros(len(rainfall_mm))
         qrain = rainfall_mm * params['area'] / (1000 * 60)  # mm/min to m³/s
         emax = np.zeros(len(rainfall_mm))
 
-        data, _ = gdt.run_simulation(params, qin, qrain, emax)
+        data, _ = pdt.run_simulation(params, qin, qrain, emax)
         outflow_data = np.array(data['Qpipe'])
 
         # Create plots
         print(f"Creating rainfall-hydrograph plot...")
 
-        fig, axes = gdt.plots.plot_rainfall_hydrograph(
+        fig, axes = pdt.plots.plot_rainfall_hydrograph(
             rainfall_file=rainfall_file,
             outflow_data=outflow_data,
             rainfall_unit='mm',
@@ -728,7 +728,7 @@ def plotting_example():
 
         # If calibration log exists, plot convergence
         try:
-            gdt.plots.plot_calibration_convergence(
+            pdt.plots.plot_calibration_convergence(
                 logbook_file="calibration_log.csv",
                 output_path="convergence_plot.png"
             )
@@ -754,7 +754,7 @@ if __name__ == "__main__":
 This example ties together all the components in a complete workflow.
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
@@ -815,19 +815,19 @@ def complete_workflow_example():
     # Step 3: Generate Synthetic Observations
     print("\nStep 3: Generating synthetic observations...")
 
-    setup = gdt.read_setup_file(setup_file)
-    params = gdt.initialize_parameters(setup)
+    setup = pdt.read_setup_file(setup_file)
+    params = pdt.initialize_parameters(setup)
 
     for i, rainfall_file in enumerate(rainfall_files):
         # Simulate true response
-        rain_df = gdt.read_rainfall_dat_file(rainfall_file)
+        rain_df = pdt.read_rainfall_dat_file(rainfall_file)
         rainfall_mm = rain_df['rain'].values * 25.4
 
         qin = np.zeros(len(rainfall_mm))
         qrain = rainfall_mm * params['area'] / (1000 * 60)
         emax = np.zeros(len(rainfall_mm))
 
-        data, _ = gdt.run_simulation(params, qin, qrain, emax)
+        data, _ = pdt.run_simulation(params, qin, qrain, emax)
         true_outflow = np.array(data['Qpipe']) * 35.315  # Convert to ft³/s
 
         # Add realistic measurement noise
@@ -849,7 +849,7 @@ def complete_workflow_example():
     print("\nStep 4: Running parameter calibration...")
 
     try:
-        best_params, calibrated_setup, logbook = gdt.run_calibration(
+        best_params, calibrated_setup, logbook = pdt.run_calibration(
             calibration_rainfall=rainfall_files,
             calibration_observed_data=observed_files,
             setup_file=setup_file,
@@ -870,19 +870,19 @@ def complete_workflow_example():
     print("\nStep 5: Validating calibrated model...")
 
     if calibration_success:
-        calib_params = gdt.initialize_parameters(calibrated_setup)
+        calib_params = pdt.initialize_parameters(calibrated_setup)
     else:
         calib_params = params
 
     # Validate on first event
-    rain_df = gdt.read_rainfall_dat_file(rainfall_files[0])
+    rain_df = pdt.read_rainfall_dat_file(rainfall_files[0])
     rainfall_mm = rain_df['rain'].values * 25.4
 
     qin = np.zeros(len(rainfall_mm))
     qrain = rainfall_mm * calib_params['area'] / (1000 * 60)
     emax = np.zeros(len(rainfall_mm))
 
-    val_data, val_wb = gdt.run_simulation(calib_params, qin, qrain, emax)
+    val_data, val_wb = pdt.run_simulation(calib_params, qin, qrain, emax)
     predicted_outflow = np.array(val_data['Qpipe']) * 35.315
 
     # Load observed data for comparison
@@ -901,7 +901,7 @@ def complete_workflow_example():
     print("\nStep 6: Parameter sensitivity analysis...")
 
     try:
-        sa = gdt.SobolSensitivityAnalysis(
+        sa = pdt.SobolSensitivityAnalysis(
             setup_file="calibrated_model.ini" if calibration_success else setup_file,
             rainfall_file=rainfall_files[0]
         )
@@ -1008,10 +1008,10 @@ prng_seed = 2025
     # Step 8: Create Visualizations
     print("\nStep 8: Creating visualizations...")
 
-    if gdt.plots is not None:
+    if pdt.plots is not None:
         try:
             # Plot first event
-            gdt.plots.plot_rainfall_hydrograph(
+            pdt.plots.plot_rainfall_hydrograph(
                 rainfall_file=rainfall_files[0],
                 outflow_data=predicted_outflow / 1000,  # Convert to m³/s
                 rainfall_unit='mm',
@@ -1022,7 +1022,7 @@ prng_seed = 2025
             # Plot calibration convergence if available
             if calibration_success:
                 try:
-                    gdt.plots.plot_calibration_convergence(
+                    pdt.plots.plot_calibration_convergence(
                         logbook_file="calibration_history.csv",
                         output_path="calibration_convergence.png"
                     )

@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from deap import base, creator, tools, algorithms
-import greendt as gdt
+import permeabledt as pdt
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 import os
@@ -106,14 +106,14 @@ def evaluate(individual,
     total_score = 0
 
     # Read the base setup
-    setup = gdt.water_flow_module.read_setup_file(setup_file)
+    setup = pdt.water_flow_module.read_setup_file(setup_file)
 
     # Update setup with individual's parameter values
     modified_params = individual_to_dict(calibration_params, individual)
     setup = update_setup_with_values(setup, individual)
 
     # Initialize parameters from the modified setup
-    parameters = gdt.water_flow_module.initialize_parameters(setup)
+    parameters = pdt.water_flow_module.initialize_parameters(setup)
 
     # Update parameters with modified values
     for param_name, value in modified_params.items():
@@ -124,7 +124,7 @@ def evaluate(individual,
     for rainfall_file, observed_file in zip(calibration_rainfall, calibration_observed_data):
         try:
             # Run the simulation
-            results, water_balance = gdt.run_simulation(
+            results, water_balance = pdt.run_simulation(
                 parameters,
                 str(rainfall_file),
                 rainfall_unit='in',
@@ -234,7 +234,7 @@ def run_calibration(calibration_rainfall,
         np.random.seed(seed)
 
     # Read setup and parse calibration parameters
-    setup = gdt.water_flow_module.read_setup_file(setup_file)
+    setup = pdt.water_flow_module.read_setup_file(setup_file)
     calib_params = parse_calibration_parameters(setup)
     lower_bound = [calib_params[key]['min'] for key in calib_params.keys()]
     upper_bound = [calib_params[key]['max'] for key in calib_params.keys()]

@@ -609,14 +609,14 @@ rain_sync, flow_sync = synchronize_data(
 def validate_physical_limits(setup_file, rainfall_file, outflow_file):
     """Check data against physical limits"""
 
-    import permeabledt as gdt
+    import permeabledt as pdt
 
     # Load parameters
-    setup = gdt.read_setup_file(setup_file)
-    params = gdt.initialize_parameters(setup)
+    setup = pdt.read_setup_file(setup_file)
+    params = pdt.initialize_parameters(setup)
 
     # Check rainfall data
-    rain_df = gdt.read_rainfall_dat_file(rainfall_file)
+    rain_df = pdt.read_rainfall_dat_file(rainfall_file)
     max_intensity = rain_df['rain'].max()
 
     # Physical limits for rainfall (rough guidelines)

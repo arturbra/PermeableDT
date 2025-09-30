@@ -40,10 +40,10 @@ def __init__(self, latitude, longitude, timezone='UTC')
 
 **Example - Basic Setup:**
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Create downloader for specific location
-downloader = gdt.HRRRAccumulatedPrecipitationDownloader(
+downloader = pdt.HRRRAccumulatedPrecipitationDownloader(
     latitude=40.7128,      # New York City
     longitude=-74.0060,
     timezone='US/Eastern'
@@ -65,7 +65,7 @@ locations = {
 
 downloaders = {}
 for city, coords in locations.items():
-    downloaders[city] = gdt.HRRRAccumulatedPrecipitationDownloader(
+    downloaders[city] = pdt.HRRRAccumulatedPrecipitationDownloader(
         latitude=coords['lat'],
         longitude=coords['lon'],
         timezone=coords['tz']
@@ -547,14 +547,14 @@ def integrate_with_particle_filter(self, model_config, update_frequency='hourly'
     self.convert_to_permeabledt_format(forecast, forecast_file)
 
     # Setup particle filter with new forecast
-    model = gdt.PavementModel(
+    model = pdt.PavementModel(
         setup_file=model_config['setup_file'],
         rainfall_file=forecast_file,
         observations_file=model_config['observations_file']
     )
 
     # Configure particle filter
-    observations = [gdt.PipeObs(model_config['observations_file'])]
+    observations = [pdt.PipeObs(model_config['observations_file'])]
 
     config = {
         'model': model,
@@ -582,7 +582,7 @@ def diagnose_download_issues():
 
     try:
         # Test basic connectivity
-        test_downloader = gdt.HRRRAccumulatedPrecipitationDownloader(
+        test_downloader = pdt.HRRRAccumulatedPrecipitationDownloader(
             latitude=40.0, longitude=-100.0
         )
 
@@ -684,7 +684,7 @@ def setup_custom_domain(bounds, resolution=3):
     for i, lat in enumerate(lat_points):
         for j, lon in enumerate(lon_points):
             key = f"point_{i:02d}_{j:02d}"
-            domain_downloaders[key] = gdt.HRRRAccumulatedPrecipitationDownloader(
+            domain_downloaders[key] = pdt.HRRRAccumulatedPrecipitationDownloader(
                 latitude=lat,
                 longitude=lon
             )

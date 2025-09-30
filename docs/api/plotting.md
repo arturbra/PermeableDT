@@ -23,12 +23,12 @@ The plotting module is conditionally imported and available as `permeabledt.plot
 ## Availability Check
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
-if gdt.plots is not None:
+if pdt.plots is not None:
     print("Plotting functions available")
     # Use plotting functions
-    gdt.plots.plot_rainfall_hydrograph(...)
+    pdt.plots.plot_rainfall_hydrograph(...)
 else:
     print("Install matplotlib for plotting: pip install permeabledt[plots]")
 ```
@@ -62,16 +62,16 @@ def plot_rainfall_hydrograph(rainfall_file, simulation_data,
 
 **Example - Basic Plot:**
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Run simulation
-setup = gdt.read_setup_file("pavement.ini")
-params = gdt.initialize_parameters(setup)
-data, wb = gdt.run_model(params, "rainfall_event.dat")
+setup = pdt.read_setup_file("pavement.ini")
+params = pdt.initialize_parameters(setup)
+data, wb = pdt.run_model(params, "rainfall_event.dat")
 
 # Create plot
-if gdt.plots is not None:
-    fig, axes = gdt.plots.plot_rainfall_hydrograph(
+if pdt.plots is not None:
+    fig, axes = pdt.plots.plot_rainfall_hydrograph(
         rainfall_file="rainfall_event.dat",
         simulation_data=data,
         title="Storm Event Analysis",
@@ -83,7 +83,7 @@ if gdt.plots is not None:
 **Example - Comparison with Observations:**
 ```python
 # Plot with observed data
-fig, axes = gdt.plots.plot_rainfall_hydrograph(
+fig, axes = pdt.plots.plot_rainfall_hydrograph(
     rainfall_file="event_data.dat",
     simulation_data=data,
     observed_file="observed_outflow.csv",
@@ -118,7 +118,7 @@ def plot_state_variables(simulation_data, title=None,
 **Example:**
 ```python
 # Plot state variable evolution
-fig, axes = gdt.plots.plot_state_variables(
+fig, axes = pdt.plots.plot_state_variables(
     simulation_data=data,
     title="System State Evolution",
     show_storage=True,
@@ -158,7 +158,7 @@ def plot_water_balance(simulation_data, water_balance, title=None,
 **Example:**
 ```python
 # Create water balance plot
-fig, axes = gdt.plots.plot_water_balance(
+fig, axes = pdt.plots.plot_water_balance(
     simulation_data=data,
     water_balance=wb,
     title=f"Water Balance (Error: {wb['error_percent']:.2f}%)",
@@ -194,11 +194,11 @@ def plot_parameter_sensitivity(sensitivity_results, plot_type='bar',
 **Example - Bar Chart:**
 ```python
 # Run sensitivity analysis
-sa = gdt.SobolSensitivityAnalysis("config.ini", "data.dat")
+sa = pdt.SobolSensitivityAnalysis("config.ini", "data.dat")
 sa_results = sa.run_analysis(n_samples=2000)
 
 # Create sensitivity plot
-fig, ax = gdt.plots.plot_parameter_sensitivity(
+fig, ax = pdt.plots.plot_parameter_sensitivity(
     sensitivity_results=sa_results,
     plot_type='bar',
     title="Parameter Sensitivity Analysis",
@@ -211,7 +211,7 @@ fig, ax = gdt.plots.plot_parameter_sensitivity(
 **Example - Tornado Plot:**
 ```python
 # Tornado plot for parameter ranges
-fig, ax = gdt.plots.plot_parameter_sensitivity(
+fig, ax = pdt.plots.plot_parameter_sensitivity(
     sensitivity_results=sa_results,
     plot_type='tornado',
     title="Parameter Importance Ranking",
@@ -245,13 +245,13 @@ def plot_particle_filter_results(pf_results, observations=None,
 **Example:**
 ```python
 # Run particle filter
-model = gdt.PavementModel("config.ini", "forecast.dat")
-observations = [gdt.PipeObs("observed.csv")]
+model = pdt.PavementModel("config.ini", "forecast.dat")
+observations = [pdt.PipeObs("observed.csv")]
 config = {'model': model, 'observations': observations, 'n_particles': 1000}
 pf_results = pypfilt.run(config)
 
 # Plot results
-fig, axes = gdt.plots.plot_particle_filter_results(
+fig, axes = pdt.plots.plot_particle_filter_results(
     pf_results=pf_results,
     observations={'time': obs_time, 'outflow': obs_flow},
     title="Real-time State Estimation",
@@ -286,7 +286,7 @@ def plot_calibration_results(calibration_results, validation_data=None,
 **Example:**
 ```python
 # Run calibration
-cal_results = gdt.run_calibration(
+cal_results = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file="cal_data.dat",
     observed_file="cal_obs.csv",
@@ -294,7 +294,7 @@ cal_results = gdt.run_calibration(
 )
 
 # Plot calibration results
-fig, axes = gdt.plots.plot_calibration_results(
+fig, axes = pdt.plots.plot_calibration_results(
     calibration_results=cal_results,
     title="Parameter Calibration Results",
     save_plot=True,
@@ -335,7 +335,7 @@ observed = pd.read_csv("observed.csv")['outflow'].values
 simulated = data['qpipe']
 
 # Create performance plot
-fig, axes, metrics = gdt.plots.plot_performance_metrics(
+fig, axes, metrics = pdt.plots.plot_performance_metrics(
     observed=observed,
     simulated=simulated,
     title="Model Performance Evaluation",
@@ -379,7 +379,7 @@ final_population = cal_results['final_population']
 param_names = list(cal_results['best_params'].keys())
 
 # Plot correlation matrix
-fig, ax, corr_matrix = gdt.plots.plot_parameter_correlation(
+fig, ax, corr_matrix = pdt.plots.plot_parameter_correlation(
     parameter_data=final_population,
     parameter_names=param_names,
     title="Parameter Correlation Matrix",
@@ -414,10 +414,10 @@ def plot_system_schematic(params, title=None, save_plot=False,
 **Example:**
 ```python
 # Create system schematic
-setup = gdt.read_setup_file("pavement.ini")
-params = gdt.initialize_parameters(setup)
+setup = pdt.read_setup_file("pavement.ini")
+params = pdt.initialize_parameters(setup)
 
-fig, ax = gdt.plots.plot_system_schematic(
+fig, ax = pdt.plots.plot_system_schematic(
     params=params,
     title="Permeable Pavement System Configuration",
     show_dimensions=True,
@@ -460,7 +460,7 @@ def plot_uncertainty_bands(time_data, ensemble_data, observed_data=None,
 time = pf_results['time']
 particles = pf_results['particles'][:, :, 0]  # hp state variable
 
-fig, ax = gdt.plots.plot_uncertainty_bands(
+fig, ax = pdt.plots.plot_uncertainty_bands(
     time_data=time,
     ensemble_data=particles.T,  # Transpose for correct shape
     observed_data=observed_hp,
@@ -506,7 +506,7 @@ forecast_data = {
     '24h': forecast_24h
 }
 
-fig, axes, metrics = gdt.plots.plot_forecast_verification(
+fig, axes, metrics = pdt.plots.plot_forecast_verification(
     forecast_data=forecast_data,
     observed_data=observed_outflow,
     lead_times=['1h', '6h', '12h', '24h'],
@@ -554,7 +554,7 @@ plot_data = {
     'rainfall': rainfall_data
 }
 
-fig, saved_files = gdt.plots.create_publication_figure(
+fig, saved_files = pdt.plots.create_publication_figure(
     plot_data=plot_data,
     plot_type='timeseries',
     style='publication',
@@ -586,7 +586,7 @@ def setup_plot_style(style='permeabledt', font_size=12, line_width=2,
 **Example:**
 ```python
 # Setup consistent plotting style
-gdt.plots.setup_plot_style(
+pdt.plots.setup_plot_style(
     style='publication',
     font_size=12,
     line_width=1.5,
@@ -594,7 +594,7 @@ gdt.plots.setup_plot_style(
 )
 
 # All subsequent plots will use this style
-fig, ax = gdt.plots.plot_rainfall_hydrograph(
+fig, ax = pdt.plots.plot_rainfall_hydrograph(
     rainfall_file="data.dat",
     simulation_data=data
 )
@@ -624,9 +624,9 @@ def create_interactive_dashboard(simulation_function, parameter_ranges,
 ```python
 # Create interactive parameter exploration dashboard
 def run_simulation_wrapper(params_dict):
-    setup = gdt.read_setup_file("config.ini")
-    params = gdt.initialize_parameters(setup, params_dict)
-    data, wb = gdt.run_model(params, "rainfall.dat")
+    setup = pdt.read_setup_file("config.ini")
+    params = pdt.initialize_parameters(setup, params_dict)
+    data, wb = pdt.run_model(params, "rainfall.dat")
     return data
 
 param_ranges = {
@@ -635,8 +635,8 @@ param_ranges = {
     'Cd': [0.5, 1.0]
 }
 
-if gdt.plots is not None:
-    fig = gdt.plots.create_interactive_dashboard(
+if pdt.plots is not None:
+    fig = pdt.plots.create_interactive_dashboard(
         simulation_function=run_simulation_wrapper,
         parameter_ranges=param_ranges,
         rainfall_file="rainfall.dat"
@@ -666,16 +666,16 @@ def save_all_plots(figures, output_dir='plots', formats=['png'],
 # Create multiple plots
 figures = {}
 
-figures['hydrograph'] = gdt.plots.plot_rainfall_hydrograph(
+figures['hydrograph'] = pdt.plots.plot_rainfall_hydrograph(
     "rainfall.dat", data
 )[0]
 
-figures['states'] = gdt.plots.plot_state_variables(data)[0]
+figures['states'] = pdt.plots.plot_state_variables(data)[0]
 
-figures['balance'] = gdt.plots.plot_water_balance(data, wb)[0]
+figures['balance'] = pdt.plots.plot_water_balance(data, wb)[0]
 
 # Save all plots
-gdt.plots.save_all_plots(
+pdt.plots.save_all_plots(
     figures=figures,
     output_dir='simulation_results',
     formats=['png', 'pdf'],
@@ -701,7 +701,7 @@ def get_default_colors(n_colors=10, palette='permeabledt')
 **Example:**
 ```python
 # Get consistent colors for multiple time series
-colors = gdt.plots.get_default_colors(n_colors=5, palette='permeabledt')
+colors = pdt.plots.get_default_colors(n_colors=5, palette='permeabledt')
 
 fig, ax = plt.subplots()
 for i, series in enumerate(data_series):
@@ -730,7 +730,7 @@ def validate_plot_data(data, required_keys):
 # Example usage in plotting functions
 try:
     validate_plot_data(simulation_data, ['time', 'qpipe', 'hp'])
-    fig, ax = gdt.plots.plot_rainfall_hydrograph(rainfall_file, simulation_data)
+    fig, ax = pdt.plots.plot_rainfall_hydrograph(rainfall_file, simulation_data)
 except ValueError as e:
     print(f"Data validation error: {e}")
 ```

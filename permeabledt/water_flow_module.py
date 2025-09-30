@@ -2,7 +2,7 @@ from datetime import datetime
 import pandas as pd
 import configparser
 import math
-import greendt as gdt
+import permeabledt as pdt
 
 
 def read_setup_file(setup_file):
@@ -549,7 +549,7 @@ def run_simulation(params: dict,
         print("Elapsed time:", datetime.now() - start_time)
 
     if plot_outflow:
-        gdt.plots.plot_rainfall_hydrograph(rainfall_file, data['Qpipe'], rainfall_unit=rainfall_unit, output_path=output_path)
+        pdt.plots.plot_rainfall_hydrograph(rainfall_file, data['Qpipe'], rainfall_unit=rainfall_unit, output_path=output_path)
 
     return data, wb
 

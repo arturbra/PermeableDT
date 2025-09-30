@@ -226,31 +226,31 @@ After installation, verify that permeabledt is working correctly:
 ### Basic Import Test
 
 ```python
-import permeabledt as gdt
-print(f"permeabledt version: {gdt.__version__}")
-print("Available modules:", [name for name in dir(gdt) if not name.startswith('_')])
+import permeabledt as pdt
+print(f"permeabledt version: {pdt.__version__}")
+print("Available modules:", [name for name in dir(pdt) if not name.startswith('_')])
 ```
 
 ### Feature Availability Test
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Test core functionality
-print("✓ Core water flow:", hasattr(gdt, 'run_simulation'))
+print("✓ Core water flow:", hasattr(pdt, 'run_simulation'))
 
 # Test optional features
-print("✓ Calibration:", hasattr(gdt, 'run_calibration'))
-print("✓ Particle filter:", gdt.PavementModel is not None)
-print("✓ Sensitivity analysis:", gdt.SobolSensitivityAnalysis is not None)
-print("✓ Weather data:", gdt.HRRRAccumulatedPrecipitationDownloader is not None)
-print("✓ Plotting:", gdt.plots is not None)
+print("✓ Calibration:", hasattr(pdt, 'run_calibration'))
+print("✓ Particle filter:", pdt.PavementModel is not None)
+print("✓ Sensitivity analysis:", pdt.SobolSensitivityAnalysis is not None)
+print("✓ Weather data:", pdt.HRRRAccumulatedPrecipitationDownloader is not None)
+print("✓ Plotting:", pdt.plots is not None)
 ```
 
 ### Simple Functionality Test
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import tempfile
 import os
 
@@ -305,8 +305,8 @@ with tempfile.NamedTemporaryFile(mode='w', suffix='.ini', delete=False) as f:
 
 try:
     # Test parameter loading
-    setup = gdt.read_setup_file(setup_file)
-    params = gdt.initialize_parameters(setup)
+    setup = pdt.read_setup_file(setup_file)
+    params = pdt.initialize_parameters(setup)
     print("✓ Parameter loading successful")
 
     # Test basic simulation
@@ -315,7 +315,7 @@ try:
     qrain = np.ones(10) * 0.001  # 1mm/timestep
     emax = np.zeros(10)
 
-    data, wb = gdt.run_simulation(params, qin, qrain, emax)
+    data, wb = pdt.run_simulation(params, qin, qrain, emax)
     print("✓ Basic simulation successful")
     print(f"  Peak outflow: {max(data['Qpipe']):.6f} m³/s")
 

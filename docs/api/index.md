@@ -63,36 +63,36 @@ permeabledt/
 
 ### Basic Usage
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Core functions are available directly
-data, wb = gdt.run_simulation(params, qin, qrain, emax)
-setup = gdt.read_setup_file("config.ini")
-params = gdt.initialize_parameters(setup)
+data, wb = pdt.run_simulation(params, qin, qrain, emax)
+setup = pdt.read_setup_file("config.ini")
+params = pdt.initialize_parameters(setup)
 ```
 
 ### Specialized Classes
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Particle filtering
-model = gdt.PavementModel(setup_file, rainfall_file)
-obs = gdt.PipeObs(observed_file)
+model = pdt.PavementModel(setup_file, rainfall_file)
+obs = pdt.PipeObs(observed_file)
 
 # Sensitivity analysis
-sa = gdt.SobolSensitivityAnalysis(setup_file, rainfall_file)
+sa = pdt.SobolSensitivityAnalysis(setup_file, rainfall_file)
 
 # Weather data
-downloader = gdt.HRRRAccumulatedPrecipitationDownloader(lat, lon)
+downloader = pdt.HRRRAccumulatedPrecipitationDownloader(lat, lon)
 ```
 
 ### Plotting Module
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Plotting functions (if matplotlib available)
-if gdt.plots is not None:
-    gdt.plots.plot_rainfall_hydrograph(rainfall_file, outflow_data)
+if pdt.plots is not None:
+    pdt.plots.plot_rainfall_hydrograph(rainfall_file, outflow_data)
 ```
 
 ## Function Categories
@@ -131,7 +131,7 @@ All permeabledt functions include comprehensive error handling:
 ### Example Error Handling
 ```python
 try:
-    data, wb = gdt.run_model(params, "rainfall.dat")
+    data, wb = pdt.run_model(params, "rainfall.dat")
 except FileNotFoundError as e:
     print(f"Input file not found: {e}")
 except ValueError as e:
@@ -148,7 +148,7 @@ Some functions require optional dependencies:
 Require: `deap`, `scikit-learn`
 ```python
 try:
-    result = gdt.run_calibration(...)
+    result = pdt.run_calibration(...)
 except RuntimeError as e:
     print("Install with: pip install permeabledt[calib]")
 ```
@@ -156,8 +156,8 @@ except RuntimeError as e:
 ### Particle Filter Classes
 Require: `pypfilt`, `scipy`, `tomlkit`
 ```python
-if gdt.PavementModel is not None:
-    model = gdt.PavementModel(...)
+if pdt.PavementModel is not None:
+    model = pdt.PavementModel(...)
 else:
     print("Install with: pip install permeabledt[pf]")
 ```
@@ -165,8 +165,8 @@ else:
 ### Sensitivity Analysis
 Requires: `SALib`, `tqdm`
 ```python
-if gdt.SobolSensitivityAnalysis is not None:
-    sa = gdt.SobolSensitivityAnalysis(...)
+if pdt.SobolSensitivityAnalysis is not None:
+    sa = pdt.SobolSensitivityAnalysis(...)
 else:
     print("Install with: pip install permeabledt[sensitivity]")
 ```
@@ -174,8 +174,8 @@ else:
 ### Weather Data
 Requires: `herbie-data`, `xarray`, `pytz`
 ```python
-if gdt.HRRRAccumulatedPrecipitationDownloader is not None:
-    downloader = gdt.HRRRAccumulatedPrecipitationDownloader(...)
+if pdt.HRRRAccumulatedPrecipitationDownloader is not None:
+    downloader = pdt.HRRRAccumulatedPrecipitationDownloader(...)
 else:
     print("Install with: pip install permeabledt[weather]")
 ```
@@ -183,8 +183,8 @@ else:
 ### Plotting
 Requires: `matplotlib`
 ```python
-if gdt.plots is not None:
-    gdt.plots.plot_rainfall_hydrograph(...)
+if pdt.plots is not None:
+    pdt.plots.plot_rainfall_hydrograph(...)
 else:
     print("Install with: pip install permeabledt[plots]")
 ```
@@ -192,8 +192,8 @@ else:
 ## Version Information
 
 ```python
-import permeabledt as gdt
-print(f"permeabledt version: {gdt.__version__}")
+import permeabledt as pdt
+print(f"permeabledt version: {pdt.__version__}")
 ```
 
 ## Detailed Module Documentation

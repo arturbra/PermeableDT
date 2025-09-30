@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-from greendt.water_flow_module import read_rainfall_dat_file
-import greendt as gdt
+from permeabledt.water_flow_module import read_rainfall_dat_file
+import permeabledt as pdt
 import os
 
 
@@ -123,7 +123,7 @@ def plot_event_comparison(rainfall_files,
 
     for idx, (rain_file, obs_file) in enumerate(zip(rainfall_files, observed_files)):
         # --- 1) run model ---
-        results, _ = gdt.run_simulation(
+        results, _ = pdt.run_simulation(
             parameters,
             str(rain_file),
             rainfall_unit=rainfall_unit,

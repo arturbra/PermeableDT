@@ -30,12 +30,12 @@ def run_simulation(params, qin, qrain, emax, dt=60.0, output_time_interval=None)
 
 **Example:**
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import numpy as np
 
 # Load parameters
-setup = gdt.read_setup_file("config.ini")
-params = gdt.initialize_parameters(setup)
+setup = pdt.read_setup_file("config.ini")
+params = pdt.initialize_parameters(setup)
 
 # Create input time series (24 hours)
 time_steps = 1440  # minutes
@@ -44,7 +44,7 @@ qrain = np.random.exponential(0.001, time_steps)  # Random rainfall
 emax = np.full(time_steps, 1e-6)  # Constant ET
 
 # Run simulation
-data, wb = gdt.run_simulation(params, qin, qrain, emax)
+data, wb = pdt.run_simulation(params, qin, qrain, emax)
 
 print(f"Peak ponding depth: {max(data['hp']):.3f} m")
 print(f"Water balance error: {wb['error_percent']:.2f}%")
@@ -73,14 +73,14 @@ def run_model(params, rainfall_file, qin_file=None, emax_file=None,
 
 **Example:**
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Load configuration
-setup = gdt.read_setup_file("pavement.ini")
-params = gdt.initialize_parameters(setup)
+setup = pdt.read_setup_file("pavement.ini")
+params = pdt.initialize_parameters(setup)
 
 # Run from files
-data, wb = gdt.run_model(params, "rainfall_event.dat")
+data, wb = pdt.run_model(params, "rainfall_event.dat")
 
 # Check results
 print(f"Simulation completed with {len(data['time'])} timesteps")
@@ -118,7 +118,7 @@ hp, s, hsz = 0.0, 0.3, 0.5  # Initial conditions
 dt = 60.0  # 1-minute timestep
 
 for i in range(100):  # 100 timesteps
-    hp, s, hsz, fluxes = gdt.run_single_timestep(
+    hp, s, hsz, fluxes = pdt.run_single_timestep(
         params, hp, s, hsz, qin[i], qrain[i], emax[i], dt
     )
 
@@ -153,12 +153,12 @@ def initialize_parameters(setup, custom_params=None)
 
 **Example:**
 ```python
-setup = gdt.read_setup_file("config.ini")
-params = gdt.initialize_parameters(setup)
+setup = pdt.read_setup_file("config.ini")
+params = pdt.initialize_parameters(setup)
 
 # Override specific parameters
 custom = {"Ks": 1e-4, "gama": 2.0}
-params_modified = gdt.initialize_parameters(setup, custom)
+params_modified = pdt.initialize_parameters(setup, custom)
 
 print(f"Default Ks: {params['Ks']}")
 print(f"Modified Ks: {params_modified['Ks']}")
@@ -188,7 +188,7 @@ modifications = {
     "Cd": 0.8          # Change discharge coefficient
 }
 
-params = gdt.modify_parameters(params, modifications)
+params = pdt.modify_parameters(params, modifications)
 ```
 
 ## Data I/O Functions
@@ -209,7 +209,7 @@ def read_setup_file(filename)
 
 **Example:**
 ```python
-setup = gdt.read_setup_file("pavement_config.ini")
+setup = pdt.read_setup_file("pavement_config.ini")
 
 # Access parameter sections
 print("Physical parameters:", setup['PHYSICAL'])
@@ -244,7 +244,7 @@ def read_rainfall_dat_file(filename)
 
 **Example:**
 ```python
-time, rainfall = gdt.read_rainfall_dat_file("event_01.dat")
+time, rainfall = pdt.read_rainfall_dat_file("event_01.dat")
 print(f"Duration: {max(time)} minutes")
 print(f"Peak intensity: {max(rainfall)} mm/h")
 ```
@@ -268,8 +268,8 @@ def results_dataframe(data, time_unit='minutes')
 ```python
 import pandas as pd
 
-data, wb = gdt.run_simulation(params, qin, qrain, emax)
-df = gdt.results_dataframe(data, time_unit='hours')
+data, wb = pdt.run_simulation(params, qin, qrain, emax)
+df = pdt.results_dataframe(data, time_unit='hours')
 
 # Analyze results
 print(df.describe())
@@ -294,7 +294,7 @@ def load_input_files(rainfall_file, qin_file=None, emax_file=None)
 
 **Example:**
 ```python
-inputs = gdt.load_input_files(
+inputs = pdt.load_input_files(
     rainfall_file="rainfall.dat",
     qin_file="inflow.dat",
     emax_file="et.dat"
@@ -328,7 +328,7 @@ def calculate_water_balance(data, params, inputs)
 
 **Example:**
 ```python
-wb = gdt.calculate_water_balance(data, params, inputs)
+wb = pdt.calculate_water_balance(data, params, inputs)
 
 print(f"Input volume: {wb['input_volume']:.3f} m³")
 print(f"Output volume: {wb['output_volume']:.3f} m³")
@@ -360,10 +360,10 @@ def rainfall_data_treatment(time, rainfall, dt=60.0, interpolate=True)
 **Example:**
 ```python
 # Load irregular rainfall data
-time, rainfall = gdt.read_rainfall_dat_file("irregular_data.dat")
+time, rainfall = pdt.read_rainfall_dat_file("irregular_data.dat")
 
 # Process to regular 5-minute intervals
-time_reg, rain_reg, qrain = gdt.rainfall_data_treatment(
+time_reg, rain_reg, qrain = pdt.rainfall_data_treatment(
     time, rainfall, dt=300.0, interpolate=True
 )
 
@@ -391,7 +391,7 @@ def get_parameter_bounds(param_names)
 ```python
 # Get bounds for calibration parameters
 params_to_calibrate = ["Ks", "gama", "sw", "sfc", "Cd"]
-bounds = gdt.get_parameter_bounds(params_to_calibrate)
+bounds = pdt.get_parameter_bounds(params_to_calibrate)
 
 print("Lower bounds:", bounds['lower'])
 print("Upper bounds:", bounds['upper'])
@@ -418,7 +418,7 @@ def validate_inputs(params, qin, qrain, emax, dt)
 
 **Example:**
 ```python
-is_valid, warnings = gdt.validate_inputs(params, qin, qrain, emax, dt)
+is_valid, warnings = pdt.validate_inputs(params, qin, qrain, emax, dt)
 
 if not is_valid:
     print("Validation failed!")
@@ -485,7 +485,7 @@ All functions include comprehensive error checking:
 ### Parameter Validation
 ```python
 try:
-    params = gdt.initialize_parameters(setup)
+    params = pdt.initialize_parameters(setup)
 except ValueError as e:
     print(f"Invalid parameter: {e}")
 ```
@@ -493,7 +493,7 @@ except ValueError as e:
 ### File I/O Errors
 ```python
 try:
-    data, wb = gdt.run_model(params, "rainfall.dat")
+    data, wb = pdt.run_model(params, "rainfall.dat")
 except FileNotFoundError:
     print("Rainfall file not found")
 ```
@@ -527,7 +527,7 @@ if wb['error_percent'] > 5.0:
 ### Calibration
 ```python
 # Use in optimization
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file="data.dat",
     observed_file="outflow.csv"
@@ -537,13 +537,13 @@ result = gdt.run_calibration(
 ### Particle Filtering
 ```python
 # Real-time forecasting
-model = gdt.PavementModel("config.ini", "forecast.dat")
+model = pdt.PavementModel("config.ini", "forecast.dat")
 ```
 
 ### Sensitivity Analysis
 ```python
 # Parameter importance
-sa = gdt.SobolSensitivityAnalysis("config.ini", "data.dat")
+sa = pdt.SobolSensitivityAnalysis("config.ini", "data.dat")
 results = sa.run_analysis()
 ```
 

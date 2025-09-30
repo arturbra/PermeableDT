@@ -86,10 +86,10 @@ def describe(self) -> dict
 
 **Example - Basic Model Setup:**
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Create model instance
-model = gdt.PavementModel(
+model = pdt.PavementModel(
     setup_file="pavement.ini",
     rainfall_file="forecast_rainfall.dat",
     observations_file="observed_outflow.csv"
@@ -151,7 +151,7 @@ def log_llhd(self, ctx, obs_vec, model_obs)
 **Example - Observation Setup:**
 ```python
 # Create observation instance
-obs = gdt.PipeObs(
+obs = pdt.PipeObs(
     observed_file="outflow_data.csv",
     obs_error_std=5e-7  # 0.5 μm³/s error
 )
@@ -166,19 +166,19 @@ observations = [obs]
 
 ```python
 import pypfilt
-import permeabledt as gdt
+import permeabledt as pdt
 
 def run_basic_particle_filter():
     """Run basic particle filter for real-time forecasting."""
 
     # 1. Create model and observations
-    model = gdt.PavementModel(
+    model = pdt.PavementModel(
         setup_file="config.ini",
         rainfall_file="forecast.dat",
         observations_file="observed.csv"
     )
 
-    observations = [gdt.PipeObs("observed.csv")]
+    observations = [pdt.PipeObs("observed.csv")]
 
     # 2. Configure particle filter
     config = {
@@ -202,10 +202,10 @@ def run_advanced_particle_filter():
     """Advanced particle filter with custom settings."""
 
     # Model setup
-    model = gdt.PavementModel("pavement.ini", "rainfall_forecast.dat")
+    model = pdt.PavementModel("pavement.ini", "rainfall_forecast.dat")
 
     # Multiple observation types
-    pipe_obs = gdt.PipeObs("pipe_outflow.csv", obs_error_std=1e-6)
+    pipe_obs = pdt.PipeObs("pipe_outflow.csv", obs_error_std=1e-6)
     observations = [pipe_obs]
 
     # Advanced resampling
@@ -289,7 +289,7 @@ def load_pf_config(config_file):
 
 # Use configuration
 config = load_pf_config("pf_config.toml")
-model = gdt.PavementModel(
+model = pdt.PavementModel(
     setup_file=config['model']['setup_file'],
     rainfall_file=config['model']['rainfall_file']
 )
@@ -436,7 +436,7 @@ def setup_multi_observation_filter():
     """Setup particle filter with multiple observation types."""
 
     # Different observation sources
-    pipe_obs = gdt.PipeObs("pipe_outflow.csv", obs_error_std=1e-6)
+    pipe_obs = pdt.PipeObs("pipe_outflow.csv", obs_error_std=1e-6)
 
     # Custom observation for ponding depth (if available)
     class PondingObs(pypfilt.obs.Univariate):
@@ -520,13 +520,13 @@ def cross_validate_particle_filter(model_config, n_folds=5):
         train_data.to_csv(train_file, index=False)
 
         # Setup model with training data
-        model = gdt.PavementModel(
+        model = pdt.PavementModel(
             setup_file=model_config['setup_file'],
             rainfall_file=model_config['rainfall_file'],
             observations_file=train_file
         )
 
-        observations = [gdt.PipeObs(train_file)]
+        observations = [pdt.PipeObs(train_file)]
 
         # Run particle filter
         config = {
@@ -602,8 +602,8 @@ def real_time_processor():
     """Real-time particle filter for streaming data."""
 
     # Initialize particle filter
-    model = gdt.PavementModel("config.ini", "current_forecast.dat")
-    observations = [gdt.PipeObs("current_obs.csv")]
+    model = pdt.PavementModel("config.ini", "current_forecast.dat")
+    observations = [pdt.PipeObs("current_obs.csv")]
 
     # Initialize particle ensemble
     n_particles = 1000

@@ -59,10 +59,10 @@ default_parameters = [
 
 **Example - Basic Setup:**
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Basic sensitivity analysis
-sa = gdt.SobolSensitivityAnalysis(
+sa = pdt.SobolSensitivityAnalysis(
     setup_file="pavement.ini",
     rainfall_file="design_storm.dat",
     output_variable='qpipe_peak'
@@ -85,7 +85,7 @@ custom_bounds = {
     'ng': [0.30, 0.40]       # Measured porosity range
 }
 
-sa = gdt.SobolSensitivityAnalysis(
+sa = pdt.SobolSensitivityAnalysis(
     setup_file="calibrated_pavement.ini",
     rainfall_file="100yr_storm.dat",
     output_variable='hp_peak',
@@ -283,7 +283,7 @@ def custom_output_function(data, params):
     return np.percentile(data['hp'], 95)
 
 # Modify the class to use custom output
-class CustomSensitivityAnalysis(gdt.SobolSensitivityAnalysis):
+class CustomSensitivityAnalysis(pdt.SobolSensitivityAnalysis):
     def extract_output_variable(self, data, params):
         if self.output_variable == 'hp_95th':
             return custom_output_function(data, params)
@@ -413,7 +413,7 @@ def multi_output_sensitivity_analysis(setup_file, rainfall_file, output_vars):
     for output_var in output_vars:
         print(f"Analyzing {output_var}...")
 
-        sa = gdt.SobolSensitivityAnalysis(
+        sa = pdt.SobolSensitivityAnalysis(
             setup_file=setup_file,
             rainfall_file=rainfall_file,
             output_variable=output_var
@@ -448,7 +448,7 @@ def temporal_sensitivity_analysis(setup_file, rainfall_files, time_labels):
     temporal_results = {}
 
     for rainfall_file, label in zip(rainfall_files, time_labels):
-        sa = gdt.SobolSensitivityAnalysis(
+        sa = pdt.SobolSensitivityAnalysis(
             setup_file=setup_file,
             rainfall_file=rainfall_file,
             output_variable='qpipe_peak'
@@ -731,7 +731,7 @@ def optimize_parallel_performance():
     print(f"Using {optimal_processes} processes")
 
     # Configure for parallel execution
-    sa = gdt.SobolSensitivityAnalysis(
+    sa = pdt.SobolSensitivityAnalysis(
         setup_file="config.ini",
         rainfall_file="data.dat"
     )
@@ -813,7 +813,7 @@ def calibration_informed_sensitivity_analysis(calibration_results):
         ]
 
     # Perform sensitivity analysis with calibrated bounds
-    sa = gdt.SobolSensitivityAnalysis(
+    sa = pdt.SobolSensitivityAnalysis(
         setup_file="config.ini",
         rainfall_file="data.dat",
         parameter_bounds=calibrated_bounds
@@ -853,9 +853,9 @@ def uncertainty_propagation_analysis(sa_results, forecast_data):
             perturbed_params[param] = np.random.uniform(param_range[0], param_range[1])
 
         # Run forecast with perturbed parameters
-        setup = gdt.read_setup_file("config.ini")
-        params = gdt.initialize_parameters(setup, perturbed_params)
-        data, wb = gdt.run_model(params, forecast_data)
+        setup = pdt.read_setup_file("config.ini")
+        params = pdt.initialize_parameters(setup, perturbed_params)
+        data, wb = pdt.run_model(params, forecast_data)
 
         forecast_outputs.append(data['qpipe'])
 

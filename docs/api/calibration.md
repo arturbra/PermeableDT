@@ -73,10 +73,10 @@ def run_calibration(setup_file, rainfall_file, observed_file,
 
 **Example - Basic Calibration:**
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 
 # Basic calibration with default settings
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="pavement.ini",
     rainfall_file="event_data.dat",
     observed_file="observed_outflow.csv"
@@ -97,7 +97,7 @@ custom_bounds = {
     'upper': [1e-3, 5.0, 1.0, 1.0]
 }
 
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file="rainfall.dat",
     observed_file="outflow.csv",
@@ -114,7 +114,7 @@ result = gdt.run_calibration(
 **Example - Multi-objective Calibration:**
 ```python
 # Multi-objective optimization
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file="data.dat",
     observed_file="obs.csv",
@@ -154,7 +154,7 @@ def calibrate(setup_file, rainfall_file, observed_file,
 **Example:**
 ```python
 # Legacy interface
-best_params, best_fitness, logbook = gdt.calibrate(
+best_params, best_fitness, logbook = pdt.calibrate(
     setup_file="config.ini",
     rainfall_file="data.dat",
     observed_file="outflow.csv",
@@ -267,7 +267,7 @@ moisture_params = ['sw', 'sfc', 'ss', 'sh']
 # All physical parameters
 all_params = ['Ks', 'gama', 'sw', 'sfc', 'ss', 'sh', 'Cd', 'eta', 'nf', 'ng', 'Dtl', 'Dg']
 
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file="data.dat",
     observed_file="obs.csv",
@@ -325,19 +325,19 @@ wide_bounds = {
 ### Crossover and Mutation
 ```python
 # Conservative settings (slow but steady)
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     crossover_prob=0.5,
     mutation_prob=0.1
 )
 
 # Aggressive settings (fast exploration)
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     crossover_prob=0.8,
     mutation_prob=0.3
 )
 
 # Balanced settings (recommended)
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     crossover_prob=0.7,
     mutation_prob=0.2
 )
@@ -441,9 +441,9 @@ plt.grid(True)
 plt.show()
 
 # Test calibrated parameters
-setup = gdt.read_setup_file("config.ini")
-params = gdt.initialize_parameters(setup, result['best_params'])
-data, wb = gdt.run_model(params, "rainfall.dat")
+setup = pdt.read_setup_file("config.ini")
+params = pdt.initialize_parameters(setup, result['best_params'])
+data, wb = pdt.run_model(params, "rainfall.dat")
 
 # Plot results vs observations
 plt.figure(figsize=(12, 6))
@@ -468,7 +468,7 @@ observed_files = ["obs_01.csv", "obs_02.csv", "obs_03.csv"]
 
 results = []
 for rain_file, obs_file in zip(rainfall_files, observed_files):
-    result = gdt.run_calibration(
+    result = pdt.run_calibration(
         setup_file="config.ini",
         rainfall_file=rain_file,
         observed_file=obs_file,
@@ -508,7 +508,7 @@ analyze_parameter_evolution(result)
 def split_calibration_validation(rainfall_file, observed_file, split_ratio=0.7):
     """Split data into calibration and validation periods."""
     # Load full datasets
-    time_rain, rainfall = gdt.read_rainfall_dat_file(rainfall_file)
+    time_rain, rainfall = pdt.read_rainfall_dat_file(rainfall_file)
     obs_data = pd.read_csv(observed_file)
 
     # Find split point
@@ -529,16 +529,16 @@ cal_rain, cal_obs, val_rain, val_obs = split_calibration_validation(
 )
 
 # Calibrate on first part
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file=cal_rain,
     observed_file=cal_obs
 )
 
 # Validate on second part
-setup = gdt.read_setup_file("config.ini")
-params = gdt.initialize_parameters(setup, result['best_params'])
-val_data, val_wb = gdt.run_model(params, val_rain)
+setup = pdt.read_setup_file("config.ini")
+params = pdt.initialize_parameters(setup, result['best_params'])
+val_data, val_wb = pdt.run_model(params, val_rain)
 
 print(f"Calibration NSE: {result['best_fitness']:.3f}")
 # Compare with validation observations...
@@ -551,7 +551,7 @@ print(f"Calibration NSE: {result['best_fitness']:.3f}")
 #### Missing Dependencies
 ```python
 try:
-    result = gdt.run_calibration(...)
+    result = pdt.run_calibration(...)
 except RuntimeError as e:
     if "deap" in str(e).lower():
         print("Install with: pip install permeabledt[calib]")
@@ -577,7 +577,7 @@ validate_bounds(custom_bounds, params_to_calibrate)
 ```python
 # Verify data alignment
 def check_data_sync(rainfall_file, observed_file):
-    time_rain, _ = gdt.read_rainfall_dat_file(rainfall_file)
+    time_rain, _ = pdt.read_rainfall_dat_file(rainfall_file)
     obs_data = pd.read_csv(observed_file)
 
     if len(time_rain) != len(obs_data):
@@ -599,7 +599,7 @@ The genetic algorithm can utilize multiple CPU cores:
 
 ```python
 # Use all available cores
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file="data.dat",
     observed_file="obs.csv",
@@ -614,7 +614,7 @@ For long-term simulations:
 
 ```python
 # Reduce memory usage
-result = gdt.run_calibration(
+result = pdt.run_calibration(
     setup_file="config.ini",
     rainfall_file="data.dat",
     observed_file="obs.csv",

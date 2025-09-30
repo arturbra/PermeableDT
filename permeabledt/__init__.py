@@ -1,5 +1,5 @@
 """
-GreenDT
+permeabledt
 =======
 
 Digital-twin tools for permeable-pavement water-flow modelling,
@@ -73,7 +73,7 @@ except ModuleNotFoundError:            # pragma: no cover
 # -------------------------------------------------------------------------
 def calibrate(*args, **kwargs):
     """
-    Thin wrapper around :pyfunc:`greendt.calibration.main`.
+    Thin wrapper around :pyfunc:`permeabledt.calibration.main`.
 
     This is the legacy calibration method that works with folder structures.
     For new code, consider using :pyfunc:`run_calibration` instead.
@@ -90,13 +90,13 @@ def calibrate(*args, **kwargs):
         raise RuntimeError(
             "The calibration feature requires extra dependencies "
             "(deap, numpy, pandas…). Install them with:\n"
-            "    pip install 'greendt[calib]'"
+            "    pip install 'permeabledt[calib]'"
         ) from exc
 
 
 def run_calibration(*args, **kwargs):
     """
-    Thin wrapper around :pyfunc:`greendt.calibration.run_calibration`.
+    Thin wrapper around :pyfunc:`permeabledt.calibration.run_calibration`.
 
     Run calibration using lists of rainfall and observed data files.
 
@@ -136,7 +136,7 @@ def run_calibration(*args, **kwargs):
         raise RuntimeError(
             "The calibration feature requires extra dependencies "
             "(deap, numpy, pandas…). Install them with:\n"
-            "    pip install 'greendt[calib]'"
+            "    pip install 'permeabledt[calib]'"
         ) from exc
 
 

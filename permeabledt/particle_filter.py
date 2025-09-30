@@ -3,7 +3,7 @@ import pypfilt
 from scipy.stats import norm
 import pickle
 import os
-from greendt.water_flow_module import read_setup_file, initialize_parameters, load_input_files, run_single_timestep, read_rainfall_dat_file, cnsz, cnusz
+from permeabledt.water_flow_module import read_setup_file, initialize_parameters, load_input_files, run_single_timestep, read_rainfall_dat_file, cnsz, cnusz
 from scipy.stats import norm
 
 class PavementModel(pypfilt.Model):

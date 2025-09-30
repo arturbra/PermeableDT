@@ -8,7 +8,7 @@ import concurrent.futures
 from tqdm import tqdm
 import configparser
 import os
-from greendt.water_flow_module import initialize_parameters, modify_parameters, run_model, results_dataframe, calculate_water_balance
+from permeabledt.water_flow_module import initialize_parameters, modify_parameters, run_model, results_dataframe, calculate_water_balance
 
 
 # Import your model functions (assuming they're in a module called 'model')
@@ -312,8 +312,8 @@ class SobolSensitivityAnalysis:
 # Example usage
 if __name__ == "__main__":
     # Initialize the sensitivity analysis
-    setup_file = r"C:\Users\Artur\PycharmProjects\GreenDT\tests\output\calibrated_parameters_PA.ini"
-    rainfall_file = r"C:\Users\Artur\PycharmProjects\GreenDT\tests\input\calibration\rainfall_event_1.dat"
+    setup_file = r"C:\Users\Artur\PycharmProjects\PermeableDT\tests\output\calibrated_parameters_PA.ini"
+    rainfall_file = r"C:\Users\Artur\PycharmProjects\PermeableDT\tests\input\calibration\rainfall_event_1.dat"
 
     # Create analysis instance
     gsa = SobolSensitivityAnalysis(setup_file, rainfall_file)

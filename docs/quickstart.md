@@ -13,7 +13,7 @@ Get up and running with permeabledt in minutes! This guide will walk you through
 ### Step 1: Import permeabledt
 
 ```python
-import permeabledt as gdt
+import permeabledt as pdt
 import numpy as np
 import pandas as pd
 ```
@@ -68,8 +68,8 @@ params = {
 
 ```python
 # Load parameters from INI file
-setup = gdt.read_setup_file("input_parameters.ini")
-params = gdt.initialize_parameters(setup)
+setup = pdt.read_setup_file("input_parameters.ini")
+params = pdt.initialize_parameters(setup)
 ```
 
 ### Step 3: Create Input Data
@@ -105,7 +105,7 @@ print(f"Peak intensity: {np.max(rainfall_intensity):.2f} mm/min")
 
 ```python
 # Run the simulation
-data, water_balance = gdt.run_simulation(params, qin, qrain, emax)
+data, water_balance = pdt.run_simulation(params, qin, qrain, emax)
 
 # Display results
 print("\n=== Simulation Results ===")
@@ -115,7 +115,7 @@ print(f"Final ponding depth: {data['hp'][-1]:.4f} m")
 print(f"Final soil moisture: {data['s'][-1]:.3f}")
 
 # Convert to DataFrame for easy analysis
-df = gdt.results_dataframe(data, save=True, filename="first_simulation.csv")
+df = pdt.results_dataframe(data, save=True, filename="first_simulation.csv")
 print(f"Results saved to: first_simulation.csv")
 ```
 
@@ -277,7 +277,7 @@ try:
     print("\n=== Starting Calibration ===")
     print("This may take a few minutes...")
 
-    best_params, calibrated_setup, logbook = gdt.run_calibration(
+    best_params, calibrated_setup, logbook = pdt.run_calibration(
         calibration_rainfall=['rainfall.dat'],
         calibration_observed_data=['observed_outflow.csv'],
         setup_file='setup_calibration.ini',
@@ -293,7 +293,7 @@ try:
 
     # Show improvement
     print(f"\nParameter changes:")
-    original_setup = gdt.read_setup_file('setup_calibration.ini')
+    original_setup = pdt.read_setup_file('setup_calibration.ini')
     for section in calibrated_setup.sections():
         if section == 'CALIBRATION':
             continue
@@ -424,7 +424,7 @@ try:
     print("\n=== Sensitivity Analysis ===")
 
     # Initialize sensitivity analysis
-    sa = gdt.SobolSensitivityAnalysis(
+    sa = pdt.SobolSensitivityAnalysis(
         setup_file='setup_calibration.ini',
         rainfall_file='rainfall.dat'
     )
@@ -462,7 +462,7 @@ try:
     print("\n=== Weather Data Integration ===")
 
     # Initialize HRRR downloader (example coordinates for Salt Lake City)
-    downloader = gdt.HRRRAccumulatedPrecipitationDownloader(
+    downloader = pdt.HRRRAccumulatedPrecipitationDownloader(
         lat=40.7589,
         lon=-111.8883,
         timezone='US/Mountain'

@@ -4,29 +4,9 @@
 
 import os
 import sys
-from unittest.mock import MagicMock
 
 # Add the project root to the Python path
 sys.path.insert(0, os.path.abspath('..'))
-
-# Mock imports for optional dependencies
-class Mock(MagicMock):
-    @classmethod
-    def __getattr__(cls, name):
-        return MagicMock()
-
-MOCK_MODULES = [
-    'deap', 'deap.algorithms', 'deap.base', 'deap.creator', 'deap.tools',
-    'sklearn', 'sklearn.metrics',
-    'pypfilt', 'pypfilt.resample',
-    'SALib', 'SALib.sample', 'SALib.analyze',
-    'herbie', 'xarray', 'pytz',
-    'matplotlib', 'matplotlib.pyplot',
-    'tomlkit', 'tqdm'
-]
-
-for mod_name in MOCK_MODULES:
-    sys.modules[mod_name] = Mock()
 
 # -- Project information -----------------------------------------------------
 project = 'permeabledt'
@@ -34,23 +14,13 @@ copyright = '2024, permeabledt Development Team'
 author = 'permeabledt Development Team'
 
 # The full version, including alpha/beta/rc tags
-try:
-    import permeabledt
-    release = permeabledt.__version__
-except ImportError:
-    release = '1.0.0'
-
-version = release
+release = '1.0.0'
+version = '1.0'
 
 # -- General configuration ---------------------------------------------------
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.mathjax',
     'myst_parser',
+    'sphinx.ext.mathjax',
     'sphinx_rtd_theme',
 ]
 
@@ -98,44 +68,6 @@ html_css_files = ['custom.css']
 pygments_style = 'sphinx'
 
 # -- Extension configuration -------------------------------------------------
-
-# Napoleon settings
-napoleon_google_docstring = True
-napoleon_numpy_docstring = True
-napoleon_include_init_with_doc = False
-napoleon_include_private_with_doc = False
-napoleon_include_special_with_doc = True
-napoleon_use_admonition_for_examples = False
-napoleon_use_admonition_for_notes = False
-napoleon_use_admonition_for_references = False
-napoleon_use_ivar = False
-napoleon_use_param = True
-napoleon_use_rtype = True
-napoleon_preprocess_types = False
-napoleon_type_aliases = None
-napoleon_attr_annotations = True
-
-# Autodoc settings
-autodoc_default_options = {
-    'members': True,
-    'member-order': 'bysource',
-    'special-members': '__init__',
-    'undoc-members': True,
-    'exclude-members': '__weakref__'
-}
-
-# Autosummary settings
-autosummary_generate = True
-autosummary_imported_members = True
-
-# Intersphinx mapping
-intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-    'numpy': ('https://numpy.org/doc/stable/', None),
-    'pandas': ('https://pandas.pydata.org/docs/', None),
-    'matplotlib': ('https://matplotlib.org/stable/', None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/', None),
-}
 
 # MyST Parser settings
 myst_enable_extensions = [
