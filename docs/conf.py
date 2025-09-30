@@ -4,21 +4,41 @@
 
 import os
 import sys
+from unittest.mock import MagicMock
 
 # Add the project root to the Python path
 sys.path.insert(0, os.path.abspath('..'))
 
+# Mock imports for optional dependencies
+class Mock(MagicMock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MagicMock()
+
+MOCK_MODULES = [
+    'deap', 'deap.algorithms', 'deap.base', 'deap.creator', 'deap.tools',
+    'sklearn', 'sklearn.metrics',
+    'pypfilt', 'pypfilt.resample',
+    'SALib', 'SALib.sample', 'SALib.analyze',
+    'herbie', 'xarray', 'pytz',
+    'matplotlib', 'matplotlib.pyplot',
+    'tomlkit', 'tqdm'
+]
+
+for mod_name in MOCK_MODULES:
+    sys.modules[mod_name] = Mock()
+
 # -- Project information -----------------------------------------------------
 project = 'permeabledt'
-copyright = 'Jose Brasil'
-author = 'Jose Brasil'
+copyright = '2024, permeabledt Development Team'
+author = 'permeabledt Development Team'
 
 # The full version, including alpha/beta/rc tags
 try:
     import permeabledt
     release = permeabledt.__version__
 except ImportError:
-    release = '0.1'
+    release = '1.0.0'
 
 version = release
 
@@ -42,13 +62,10 @@ templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The suffix(es) of source filenames.
-source_suffix = {
-    '.rst': None,
-    '.md': None,
-}
+source_suffix = ['.rst', '.md']
 
 # The master toctree document.
-master_doc = 'index'
+root_doc = 'index'
 
 # -- Options for HTML output -------------------------------------------------
 html_theme = 'sphinx_rtd_theme'
@@ -158,19 +175,19 @@ latex_elements = {
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'permeabledt.tex', 'permeabledt Documentation',
+    (root_doc, 'permeabledt.tex', 'permeabledt Documentation',
      'permeabledt Development Team', 'manual'),
 ]
 
 # -- Options for manual page output ------------------------------------------
 man_pages = [
-    (master_doc, 'permeabledt', 'permeabledt Documentation',
+    (root_doc, 'permeabledt', 'permeabledt Documentation',
      [author], 1)
 ]
 
 # -- Options for Texinfo output ----------------------------------------------
 texinfo_documents = [
-    (master_doc, 'permeabledt', 'permeabledt Documentation',
+    (root_doc, 'permeabledt', 'permeabledt Documentation',
      author, 'permeabledt', 'Digital-twin tools for permeable pavement modeling.',
      'Miscellaneous'),
 ]
