@@ -16,7 +16,11 @@ This document provides the mathematical foundation and theoretical background fo
 
 ## Model Overview
 
-The permeabledt model simulates water flow through permeable pavement systems using a physically-based, three-zone approach. The model captures the key hydrological processes in green infrastructure systems while maintaining computational efficiency for real-time applications.
+The PermeableDT model simulates water flow through permeable pavement systems using a physically-based, three-zone approach. The model captures the key hydrological processes in green infrastructure systems while maintaining computational efficiency for real-time applications.
+The model is based on the MicroPollutants In Rain GardEn (MPiRe) developed by Randelovic et. al (2016):
+
+### Reference:
+Randelovic, A., Zhang, K., Jacimovic, N., McCarthy, D., Deletic, A., 2016. Stormwater biofilter treatment model (MPiRe) for selected micropollutants. Water Research 89, 180–191. doi:10.1016/j.watres.2015.11.046.
 
 ### Key Features
 - **Three-zone conceptual model**: Ponding, unsaturated, and saturated zones
@@ -385,12 +389,6 @@ Global sensitivity analysis identifies:
 - Calibration priorities
 
 ## Mathematical Notation
-
-### Symbols
-- **Roman letters**: Variables and parameters
-- **Greek letters**: Coefficients and ratios
-- **Subscripts**: Zone or process identification
-- **Superscripts**: Time level or iteration
 
 ### Units
 - **[m]**: Meters (length)
