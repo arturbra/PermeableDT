@@ -1,0 +1,97 @@
+# pavement.toml is the settings file for the particle filter
+[components]
+model   = "permeabledt.particle_filter.PavementModel"
+time    = "pypfilt.Scalar"
+sampler = "pypfilt.sampler.LatinHypercube"
+summary = "pypfilt.summary.HDF5"
+
+[time]
+start            = 0
+until            = 50
+steps_per_unit   = 1
+
+[model]
+setup_file = ".\\input\\input_parameters.ini"
+rainfall_file  = ".\\input\\event_00_rainfall.dat"
+
+# === RAINFALL UNCERTAINTY MODEL (ALL UNITS IN INCHES) ===
+# Enable magnitude-dependent uncertainty model based on empirical analysis
+use_magnitude_uncertainty_model = true
+
+# Zero rainfall detection (prevents phantom rain during dry periods)
+zero_rainfall_threshold = 0.01     # inches: forecasts below this are considered "zero"
+consecutive_zero_periods = 1       # timesteps: sustained dry period detection
+
+# Threshold definitions (inches)
+rainfall_low_threshold = 0.12    # inches (~3mm): Below this: residuals straddle zero with slight positive bias
+rainfall_high_threshold = 0.12   # inches (~3mm): Above this: systematic negative bias with linear variance growth
+
+# Low rainfall model (<0.12"): slight positive bias, moderate variance
+low_rainfall_bias = 0.004        # inches (~0.1mm): slight positive bias (observed > forecasted)
+low_rainfall_variance = 0.020    # inches (~0.5mm): standard deviation
+
+# High rainfall model (>0.12"): linear bias and variance scaling
+high_rainfall_bias_slope = -0.024      # inches/inch (~-0.6 mm/mm): negative slope - increasing negative bias
+high_rainfall_bias_intercept = 0.059   # inches (~1.5mm): bias intercept
+high_rainfall_variance_slope = 0.085    # inches/inch: 0.85" error per 1" forecast (your empirical finding)
+high_rainfall_variance_intercept = 0.008  # inches (~0.2mm): base variance
+
+[prior]
+hp    = { name = "uniform", args.loc = 0.0,  args.scale = 0.05}
+hsz   = { name = "uniform", args.loc = 1e-6, args.scale = 0.05}
+s     = { name = "uniform", args.loc = 0.0, args.scale = 0.2}
+Qpipe = { name = "constant", args.value = 0}
+
+[observations.Qpipe]
+model              = "permeabledt.particle_filter.PipeObs"
+file               = ".\\input\\observed_outflow.ssv"
+
+# === ANALYTICAL UNCERTAINTY MODEL (DELTA METHOD) ===
+# Weir rating curve parameters for 6-inch Thel-Mar weir: Q(h) = k * h^n
+weir_k = 0.006               # Weir coefficient
+weir_n = 2.5532              # Weir exponent
+
+# Head measurement uncertainty (bubbler error)
+head_error_inches = 0.08     # Head measurement error in inches (manufacturer ±0.08")
+
+# Weir calibration uncertainty
+weir_rel_error = 0.05        # Weir relative error (manufacturer ±5%)
+
+# Uncertainty floors for numerical stability and realistic bounds
+min_absolute_uncertainty = 5e-6    # Minimum absolute standard deviation (m³/s)
+min_relative_uncertainty = 0.05     # Minimum relative uncertainty (5%)
+
+# Dry handling
+zero_rainfall_threshold = 0.02        # inches to consider "zero"
+consecutive_zero_periods = 4          # steps to ENTER dry (e.g., 1 hour for 15-min steps)
+consecutive_wet_periods  = 2         # steps to EXIT dry
+dry_noise_scale = 0.0                 # scales process noise while dry (0 = deterministic)
+dry_cooling_steps = 4                 # shrink ensemble for first N dry steps
+dry_cooling_gamma = 0.90              # 0.85–0.95 typical
+handoff_cooling_gamma = 0.92          # once at forecast start
+
+[filter]
+particles = 1000
+prng_seed = 2025
+resample.threshold = 0.5
+history_window = -1
+
+regularisation.enabled = true
+
+[files]
+input_directory  = "."
+output_directory = "."
+
+[summary.tables]
+forecast.component = "pypfilt.summary.PredictiveCIs"
+forecast.credible_intervals = [50, 60, 70, 80, 90, 95]
+sim_Qpipe.component = "pypfilt.summary.SimulatedObs"
+sim_Qpipe.observation_unit = "Qpipe"
+
+[filter.regularisation.bounds]
+hp    = { min = 0,    max = 0.05}
+hsz   = { min = 1e-6, max = 0.2}
+s     = { min = 0.0,  max = 1}
+Qpipe = { min = 0,    max = 0.003}
+
+[scenario.default]
