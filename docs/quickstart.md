@@ -9,7 +9,7 @@ Get up and running with PermeableDT in minutes! This guide will walk you through
 
 ## 1. Water Flow Simulation
 
-### Step 1: Download the input_parameters.ini and rainfall.dat from the examples folder on the [permeabledt/examples](https://github.com/arturbra/PermeableDT/examples/run_model)
+### Step 1: Download the input_parameters.ini and rainfall.dat from the examples folder on the [permeabledt/examples](https://github.com/arturbra/PermeableDT/tree/master/examples/run_model)
 
 ### Step 2: Import the modules and declare the files
 ```python
@@ -39,7 +39,7 @@ data, mb = pdt.run_simulation(params,
 You can analyze your raw results on the data pandas.DataFrame and visualize the plot on the output path
 
 ## 2. Calibration and validation
-### Step 1: Organize the folders and download the input files from the  [permeabledt/examples/calibration_validation](https://github.com/arturbra/PermeableDT/examples/calibration_validation)
+### Step 1: Organize the folders and download the input files from the  [permeabledt/examples/calibration_validation](https://github.com/arturbra/PermeableDT/tree/master/examples/calibration_validation)
 Make sure that your input_parameters.ini has a section [CALIBRATION]. Inside this section, input all the parameters to be calibrated as a lower bound and upper bound.
 Also include the pop and gen parameters for population size and generations respectively. 
 
@@ -139,7 +139,7 @@ print(df_valid.to_string())
 ## 3. Download Forecast Rainfall (HRRR):
 This is an optional module from the permeabledt, however, if you want to compare your particle filtering model with historical forecasts, this module is useful to download the historical forecast files. To download real-time forecasts, consult the [Herbie](https://herbie.readthedocs.io/en/stable/user_guide/tutorial/latest.html) documentation.
 
-The input files and folder organization necessary to run the code can be found in [permeabledt/examples/download_forecast_rainfall](https://github.com/arturbra/PermeableDT/examples/download_forecast_rainfall)
+The input files and folder organization necessary to run the code can be found in [permeabledt/examples/download_forecast_rainfall](https://github.com/arturbra/PermeableDT/tree/master/examples/download_forecast_rainfall)
 
 ### Run the HRRR code to download the data for the specific coordinate:
 
@@ -226,7 +226,7 @@ metrics, _ = downloader.compare_with_observed(
 ## 4. Particle Filter
 This is a simple approach to incorporate assimilated data to the particle filter, and collect the results. In this approach, we will run for a single time-step. For online estimation refer to the pypfilt [Documentation](https://pypfilt.readthedocs.io/en/latest/getting-started/caching.html) 
 
-Please, address to the [permeabledt/examples/particle_filter](https://github.com/arturbra/PermeableDT/examples/particle_filter) to download the input files and folder organization.
+Please, address to the [permeabledt/examples/particle_filter](https://github.com/arturbra/PermeableDT/tree/master/examples/particle_filter) to download the input files and folder organization.
 
 ### Step 1: Define functions that will be used for the particle filtering input data processing and post-processing (plots)
 
