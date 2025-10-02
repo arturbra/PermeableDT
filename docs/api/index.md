@@ -9,7 +9,6 @@ permeabledt provides a comprehensive API for permeable pavement modeling with th
 - **[Core Water Flow](water_flow.md)** - Basic simulation functions
 - **[Calibration](calibration.md)** - Parameter optimization
 - **[Particle Filtering](particle_filtering.md)** - Real-time forecasting
-- **[Sensitivity Analysis](sensitivity_analysis.md)** - Parameter importance
 - **[Weather Data](weather_data.md)** - HRRR data integration
 - **[Plotting](plotting.md)** - Visualization functions
 
@@ -201,6 +200,5 @@ print(f"permeabledt version: {pdt.__version__}")
 - **[Core Water Flow API](water_flow.md)** - Complete water flow function reference
 - **[Calibration API](calibration.md)** - Parameter optimization functions
 - **[Particle Filter API](particle_filtering.md)** - Real-time forecasting classes
-- **[Sensitivity Analysis API](sensitivity_analysis.md)** - Parameter analysis tools
 - **[Weather Data API](weather_data.md)** - HRRR data integration
 - **[Plotting API](plotting.md)** - Visualization functions

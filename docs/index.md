@@ -2,7 +2,7 @@
 
 **Digital Twin Tools for Permeable Pavement Water Flow Modeling**
 
-Welcome to the comprehensive documentation for permeabledt, a Python library for permeable pavement digital twin modeling, featuring water flow simulation, genetic algorithm calibration, particle filtering, sensitivity analysis, and weather data acquisition capabilities.
+Welcome to the comprehensive documentation for PermeableDT, a Python library for permeable pavement digital twin modeling, featuring water flow simulation, genetic algorithm calibration, particle filtering, and weather data acquisition capabilities.
 
 ## Table of Contents
 
@@ -98,19 +98,7 @@ Built-in plotting functions for results analysis:
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/permeabledt/discussions)
 - 📧 **Email**: Contact the development team
 
-## Citation
-
-If you use permeabledt in your research, please cite:
-
-```bibtex
-@software{permeabledt,
-  title={permeabledt: Digital Twin Tools for Permeable Pavement Modeling},
-  author={Brasil, Jose and Contributors},
-  year={2024},
-  url={https://github.com/yourusername/permeabledt}
-}
-```
 
 ## License
 
-permeabledt is released under the MIT License. See [LICENSE](../LICENSE) for details.
+PermeableDT is released under the MIT License. See [LICENSE](../LICENSE) for details.
