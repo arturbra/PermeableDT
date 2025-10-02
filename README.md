@@ -13,6 +13,14 @@
 - 🌦️ **Weather Data Integration**: HRRR forecast data downloading and processing
 - 📊 **Visualization**: Built-in plotting functions for results analysis
 
+## Support
+
+- 📧 Email: jose.brasil@utsa.edu
+- 📖 GitHub Project: [GitHub](https://github.com/arturbra/PermeableDT)
+- 🐛 Issues: [GitHub Issues](https://github.com/arturbra/permeabledt/issues)
+- 📖 Documentation: [Documentation](https://permeabledt.readthedocs.io)
+
+
 ## Installation
 
 ### Requirements
@@ -46,12 +54,6 @@ git clone https://github.com/arturbra/permeabledt.git
 cd permeabledt
 pip install -e .
 ```
-
-## Support
-
-- 📧 Email: jose.brasil@utsa.edu
-- 🐛 Issues: [GitHub Issues](https://github.com/arturbra/permeabledt/issues)
-- 📖 Documentation: [Documentation](https://permeabledt/readthedocs.io)
 
 ## Acknowledgments
 
