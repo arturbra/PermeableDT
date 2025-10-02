@@ -34,9 +34,6 @@ pip install permeabledt[calib]
 # Particle filtering support
 pip install permeabledt[pf]
 
-# Sensitivity analysis
-pip install permeabledt[sensitivity]
-
 # Weather data integration
 pip install permeabledt[weather]
 
@@ -94,13 +91,6 @@ pip install permeabledt[pf]
 pip install permeabledt[plots]
 ```
 - **matplotlib** (≥3.5.0): Plotting and visualization
-
-#### `sensitivity` - Sensitivity Analysis
-```bash
-pip install permeabledt[sensitivity]
-```
-- **SALib** (≥1.4.0): Sensitivity analysis library
-- **tqdm** (≥4.60.0): Progress bars
 
 #### `weather` - Weather Data
 ```bash
@@ -242,7 +232,6 @@ print("✓ Core water flow:", hasattr(pdt, 'run_simulation'))
 # Test optional features
 print("✓ Calibration:", hasattr(pdt, 'run_calibration'))
 print("✓ Particle filter:", pdt.PavementModel is not None)
-print("✓ Sensitivity analysis:", pdt.SobolSensitivityAnalysis is not None)
 print("✓ Weather data:", pdt.HRRRAccumulatedPrecipitationDownloader is not None)
 print("✓ Plotting:", pdt.plots is not None)
 ```
@@ -430,7 +419,7 @@ AttributeError: 'NoneType' object has no attribute '...'
 pip list | grep -E "(deap|pypfilt|SALib|herbie)"
 
 # Install missing features
-pip install permeabledt[calib,pf,sensitivity,weather]
+pip install permeabledt[calib,pf,weather]
 ```
 
 ### Getting Help

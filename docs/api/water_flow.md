@@ -539,12 +539,3 @@ result = pdt.run_calibration(
 # Real-time forecasting
 model = pdt.PavementModel("config.ini", "forecast.dat")
 ```
-
-### Sensitivity Analysis
-```python
-# Parameter importance
-sa = pdt.SobolSensitivityAnalysis("config.ini", "data.dat")
-results = sa.run_analysis()
-```
-
-This water flow API provides the foundation for all permeabledt modeling capabilities, with robust error handling, comprehensive validation, and integration with advanced features.

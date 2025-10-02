@@ -380,14 +380,6 @@ Model performance is evaluated using:
 - Volume error
 - Water balance error
 
-### Sensitivity Analysis
-
-Global sensitivity analysis identifies:
-- Most influential parameters
-- Parameter interactions
-- Model robustness
-- Calibration priorities
-
 ## Mathematical Notation
 
 ### Units

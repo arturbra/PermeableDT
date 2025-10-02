@@ -5,14 +5,14 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "permeabledt"
 version = "0.1.0"
-description = "Digital-twin tools for permeable pavement modeling, calibration, particle filtering, sensitivity analysis, and weather data acquisition"
+description = "Digital-twin tools for permeable pavement modeling, calibration, particle filtering, and weather data acquisition"
 readme = "README.md"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 authors = [
     { name="Jose Brasil", email="jose.brasil@utsa.edu" }
 ]
-keywords = ["hydrology", "pavement", "digital twin", "stormwater", "particle filter", "sensitivity analysis", "weather data", "HRRR"]
+keywords = ["hydrology", "pavement", "digital twin", "stormwater", "particle filter", "weather data", "HRRR"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
@@ -54,13 +54,6 @@ pf = [
 # Plotting functionality
 plots = [
     "matplotlib>=3.5.0"
-]
-
-# Sensitivity analysis support
-sensitivity = [
-    "SALib>=1.4.0",
-    "tqdm>=4.60.0",
-    "concurrent-futures; python_version < '3.2'"
 ]
 
 # Weather data support

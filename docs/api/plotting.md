@@ -168,57 +168,6 @@ fig, axes = pdt.plots.plot_water_balance(
 )
 ```
 
-### plot_parameter_sensitivity()
-
-Visualize sensitivity analysis results.
-
-```python
-def plot_parameter_sensitivity(sensitivity_results, plot_type='bar',
-                             title=None, save_plot=False, output_file=None,
-                             figsize=(12, 8), show_interactions=False)
-```
-
-**Parameters:**
-- `sensitivity_results` (dict): Results from sensitivity analysis
-- `plot_type` (str): Plot type ('bar', 'tornado', 'scatter')
-- `title` (str, optional): Plot title
-- `save_plot` (bool): Save plot to file
-- `output_file` (str, optional): Output file path
-- `figsize` (tuple): Figure size
-- `show_interactions` (bool): Include interaction effects
-
-**Returns:**
-- `fig` (matplotlib.Figure): Figure object
-- `axes` (matplotlib.Axes or list): Axes object(s)
-
-**Example - Bar Chart:**
-```python
-# Run sensitivity analysis
-sa = pdt.SobolSensitivityAnalysis("config.ini", "data.dat")
-sa_results = sa.run_analysis(n_samples=2000)
-
-# Create sensitivity plot
-fig, ax = pdt.plots.plot_parameter_sensitivity(
-    sensitivity_results=sa_results,
-    plot_type='bar',
-    title="Parameter Sensitivity Analysis",
-    show_interactions=True,
-    save_plot=True,
-    output_file="sensitivity_analysis.png"
-)
-```
-
-**Example - Tornado Plot:**
-```python
-# Tornado plot for parameter ranges
-fig, ax = pdt.plots.plot_parameter_sensitivity(
-    sensitivity_results=sa_results,
-    plot_type='tornado',
-    title="Parameter Importance Ranking",
-    figsize=(10, 8)
-)
-```
-
 ### plot_particle_filter_results()
 
 Visualize particle filter state estimation and forecasting results.
@@ -346,46 +295,6 @@ fig, axes, metrics = pdt.plots.plot_performance_metrics(
 print(f"NSE: {metrics['nse']:.3f}")
 print(f"RMSE: {metrics['rmse']:.6f} m³/s")
 print(f"R²: {metrics['r2']:.3f}")
-```
-
-### plot_parameter_correlation()
-
-Visualize parameter correlation matrix from calibration or sensitivity analysis.
-
-```python
-def plot_parameter_correlation(parameter_data, parameter_names,
-                             title=None, save_plot=False, output_file=None,
-                             figsize=(10, 8), method='pearson')
-```
-
-**Parameters:**
-- `parameter_data` (array): Parameter sample matrix [n_samples × n_parameters]
-- `parameter_names` (list): Parameter names
-- `title` (str, optional): Plot title
-- `save_plot` (bool): Save plot to file
-- `output_file` (str, optional): Output file path
-- `figsize` (tuple): Figure size
-- `method` (str): Correlation method ('pearson', 'spearman')
-
-**Returns:**
-- `fig` (matplotlib.Figure): Figure object
-- `ax` (matplotlib.Axes): Axes object
-- `correlation_matrix` (array): Correlation coefficients
-
-**Example:**
-```python
-# Extract parameter data from calibration
-final_population = cal_results['final_population']
-param_names = list(cal_results['best_params'].keys())
-
-# Plot correlation matrix
-fig, ax, corr_matrix = pdt.plots.plot_parameter_correlation(
-    parameter_data=final_population,
-    parameter_names=param_names,
-    title="Parameter Correlation Matrix",
-    save_plot=True,
-    output_file="parameter_correlation.png"
-)
 ```
 
 ### plot_system_schematic()

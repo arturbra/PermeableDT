@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.8+-blue.svg)](https://python.org)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**permeabledt** is a comprehensive Python library for permeable pavement digital twin modeling, featuring water flow simulation, genetic algorithm calibration, particle filtering, sensitivity analysis, and weather data acquisition capabilities.
+**permeabledt** is a comprehensive Python library for permeable pavement digital twin modeling, featuring water flow simulation, genetic algorithm calibration, particle filtering, and weather data acquisition capabilities.
 
 ## Features
 

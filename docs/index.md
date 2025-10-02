@@ -30,7 +30,6 @@ api/index
 api/water_flow
 api/calibration
 api/particle_filtering
-api/sensitivity_analysis
 api/weather_data
 api/plotting
 ```
@@ -61,12 +60,6 @@ Real-time state estimation and uncertainty quantification:
 - Probabilistic forecasting
 - Uncertainty propagation
 - Real-time data assimilation
-
-### 📈 **Sensitivity Analysis**
-Global sensitivity analysis using Sobol indices:
-- Parameter importance ranking
-- Variance decomposition
-- Multi-metric analysis
 
 ### 🌦️ **Weather Data Integration**
 HRRR forecast data downloading and processing:

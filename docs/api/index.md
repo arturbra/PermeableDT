@@ -40,11 +40,6 @@ permeabledt provides a comprehensive API for permeable pavement modeling with th
 
 ### Analysis Classes
 
-| Class | Description | Module |
-|-------|-------------|---------|
-| `SobolSensitivityAnalysis` | Global sensitivity analysis | `permeabledt.sensitivity_analysis` |
-| `HRRRAccumulatedPrecipitationDownloader` | Weather data downloader | `permeabledt.download_HRRR_historical_forecast` |
-
 ## Module Structure
 
 ```
@@ -53,7 +48,6 @@ permeabledt/
 ├── water_flow_module.py                 # Core simulation functions
 ├── calibration.py                       # Genetic algorithm optimization
 ├── particle_filter.py                   # Particle filtering classes
-├── sensitivity_analysis.py              # Sensitivity analysis tools
 ├── download_HRRR_historical_forecast.py # Weather data integration
 └── plots.py                            # Visualization functions
 ```
@@ -78,11 +72,6 @@ import permeabledt as pdt
 model = pdt.PavementModel(setup_file, rainfall_file)
 obs = pdt.PipeObs(observed_file)
 
-# Sensitivity analysis
-sa = pdt.SobolSensitivityAnalysis(setup_file, rainfall_file)
-
-# Weather data
-downloader = pdt.HRRRAccumulatedPrecipitationDownloader(lat, lon)
 ```
 
 ### Plotting Module
@@ -159,15 +148,6 @@ if pdt.PavementModel is not None:
     model = pdt.PavementModel(...)
 else:
     print("Install with: pip install permeabledt[pf]")
-```
-
-### Sensitivity Analysis
-Requires: `SALib`, `tqdm`
-```python
-if pdt.SobolSensitivityAnalysis is not None:
-    sa = pdt.SobolSensitivityAnalysis(...)
-else:
-    print("Install with: pip install permeabledt[sensitivity]")
 ```
 
 ### Weather Data
