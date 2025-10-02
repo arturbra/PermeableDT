@@ -1,184 +1,84 @@
 # API Reference
 
-Complete reference documentation for all permeabledt functions, classes, and modules.
+High-level map of the `permeabledt` public API.  Detailed pages for each module
+are linked throughout.
 
-## Overview
+- **[Core Water Flow](water_flow.md)** – Simulation entry points and utilities.
+- **[Calibration](calibration.md)** – Genetic-algorithm calibration helpers.
+- **[Particle Filtering](particle_filtering.md)** – pypfilt model and observation
+  adapters.
+- **[Weather Data](weather_data.md)** – HRRR accumulated-precipitation tools.
+- **[Plotting](plotting.md)** – Optional matplotlib helpers.
 
-permeabledt provides a comprehensive API for permeable pavement modeling with the following main modules:
+## Quick reference
 
-- **[Core Water Flow](water_flow.md)** - Basic simulation functions
-- **[Calibration](calibration.md)** - Parameter optimization
-- **[Particle Filtering](particle_filtering.md)** - Real-time forecasting
-- **[Weather Data](weather_data.md)** - HRRR data integration
-- **[Plotting](plotting.md)** - Visualization functions
+### Core water-flow helpers (`permeabledt` top-level)
 
-## Quick Reference
+| Function | Description |
+| --- | --- |
+| `run_simulation(params, rainfall_file, *, inflow=None, evapotranspiration=None, rainfall_unit='mm', verbose=True, plot_outflow=False, output_path=None)` | Read a rainfall `.dat` file, simulate the event, and return pandas outputs. |
+| `run_model(params, rainfall_file, inflow=None, evapotranspiration=None, rainfall_unit='mm')` | Lower-level driver that returns raw lists for each series. |
+| `run_from_files(pavement, event, input_folder='input_files', calibrated_parameters=None, verbose=True)` | Legacy wrapper compatible with the historical folder layout. |
+| `read_setup_file(path)` | Load an INI file with `configparser`. |
+| `initialize_parameters(setup)` | Build the parameter dictionary expected by the solver. |
+| `modify_parameters(parameters, calibrated_params)` | Apply calibration overrides to a parameter dictionary. |
+| `results_dataframe(results)` | Convert the dictionary from `run_model` into a `DataFrame`. |
+| `calculate_water_balance(data, dt)` | Summarise volumes and peaks from a simulation. |
 
-### Core Functions
+### Calibration (`permeabledt` top-level)
 
-| Function | Description | Module |
-|----------|-------------|---------|
-| `run_simulation()` | Run water flow simulation with arrays | `permeabledt` |
-| `run_model()` | Run simulation from files | `permeabledt` |
-| `initialize_parameters()` | Load parameters from setup file | `permeabledt` |
-| `read_setup_file()` | Read INI configuration file | `permeabledt` |
-| `calculate_water_balance()` | Compute water balance metrics | `permeabledt` |
+| Function | Description |
+| --- | --- |
+| `run_calibration(calibration_rainfall, calibration_observed_data, setup_file, ...)` | Run the DEAP-based GA using parallel rainfall/observation file lists. |
+| `calibrate(*args, **kwargs)` | Thin wrapper around the legacy `calibration.main`. |
 
-### Calibration Functions
+### Particle filtering (`permeabledt.particle_filter`)
 
-| Function | Description | Module |
-|----------|-------------|---------|
-| `run_calibration()` | Modern calibration interface | `permeabledt` |
-| `calibrate()` | Legacy calibration method | `permeabledt` |
+| Class | Description |
+| --- | --- |
+| `PavementModel` | `pypfilt.Model` subclass that steps the pavement states. |
+| `PipeObs` | Observation model that provides a normal likelihood for pipe flow. |
 
-### Particle Filter Classes
+### Weather data (`permeabledt.download_HRRR_historical_forecast`)
 
-| Class | Description | Module |
-|-------|-------------|---------|
-| `PavementModel` | pypfilt.Model implementation | `permeabledt.particle_filter` |
-| `PipeObs` | pypfilt.obs.Univariate implementation | `permeabledt.particle_filter` |
+| Class | Description |
+| --- | --- |
+| `HRRRAccumulatedPrecipitationDownloader` | Download, save, and compare HRRR accumulated precipitation. |
 
-### Analysis Classes
+### Plotting (`permeabledt.plots` – optional)
 
-## Module Structure
+| Function | Description |
+| --- | --- |
+| `plot_rainfall_hydrograph(...)` | Plot rainfall bars and simulated outflow. |
+| `plot_event_comparison(...)` | Compare modeled vs observed outflow for multiple events. |
+| `plot_calibration_summary(...)` | Summarise calibration metrics. |
 
-```
-permeabledt/
-├── __init__.py                          # Main package interface
-├── water_flow_module.py                 # Core simulation functions
-├── calibration.py                       # Genetic algorithm optimization
-├── particle_filter.py                   # Particle filtering classes
-├── download_HRRR_historical_forecast.py # Weather data integration
-└── plots.py                            # Visualization functions
-```
+## Typical import pattern
 
-## Import Patterns
-
-### Basic Usage
 ```python
 import permeabledt as pdt
 
-# Core functions are available directly
-data, wb = pdt.run_simulation(params, qin, qrain, emax)
-setup = pdt.read_setup_file("config.ini")
+setup = pdt.read_setup_file("configs/tc_pf_example.ini")
 params = pdt.initialize_parameters(setup)
+
+data, wb = pdt.run_simulation(
+    params,
+    "data/rainfall_event.dat",
+    rainfall_unit="mm",
+    verbose=False,
+)
 ```
 
-### Specialized Classes
-```python
-import permeabledt as pdt
+Optional features (calibration, particle filtering, weather downloads, plotting)
+are imported lazily.  Attempting to use them without the corresponding extras
+raises `RuntimeError` with installation guidance, e.g.:
 
-# Particle filtering
-model = pdt.PavementModel(setup_file, rainfall_file)
-obs = pdt.PipeObs(observed_file)
-
-```
-
-### Plotting Module
-```python
-import permeabledt as pdt
-
-# Plotting functions (if matplotlib available)
-if pdt.plots is not None:
-    pdt.plots.plot_rainfall_hydrograph(rainfall_file, outflow_data)
-```
-
-## Function Categories
-
-### Data I/O Functions
-- `read_setup_file()` - Read INI configuration files
-- `read_rainfall_dat_file()` - Read rainfall data files
-- `results_dataframe()` - Convert results to pandas DataFrame
-- `load_input_files()` - Load simulation input files
-
-### Simulation Functions
-- `run_simulation()` - Core simulation with arrays
-- `run_model()` - File-based simulation
-- `run_single_timestep()` - Single timestep execution
-- `calculate_water_balance()` - Water balance computation
-
-### Parameter Functions
-- `initialize_parameters()` - Parameter initialization
-- `modify_parameters()` - Parameter modification
-- `rainfall_data_treatment()` - Rainfall data processing
-
-### Calibration Functions
-- `run_calibration()` - Modern calibration interface
-- `calibrate()` - Legacy calibration method
-
-## Error Handling
-
-All permeabledt functions include comprehensive error handling:
-
-### Common Exceptions
-- `FileNotFoundError` - Missing input files
-- `ValueError` - Invalid parameter values
-- `RuntimeError` - Missing optional dependencies
-- `KeyError` - Missing configuration parameters
-
-### Example Error Handling
 ```python
 try:
-    data, wb = pdt.run_model(params, "rainfall.dat")
-except FileNotFoundError as e:
-    print(f"Input file not found: {e}")
-except ValueError as e:
-    print(f"Invalid parameter: {e}")
-except RuntimeError as e:
-    print(f"Missing dependency: {e}")
+    best, calibrated_setup, logbook = pdt.run_calibration(rain_events, observed, setup_file)
+except RuntimeError:
+    print("Install with: pip install 'permeabledt[calib]'")
 ```
 
-## Optional Dependencies
-
-Some functions require optional dependencies:
-
-### Calibration Functions
-Require: `deap`, `scikit-learn`
-```python
-try:
-    result = pdt.run_calibration(...)
-except RuntimeError as e:
-    print("Install with: pip install permeabledt[calib]")
-```
-
-### Particle Filter Classes
-Require: `pypfilt`, `scipy`, `tomlkit`
-```python
-if pdt.PavementModel is not None:
-    model = pdt.PavementModel(...)
-else:
-    print("Install with: pip install permeabledt[pf]")
-```
-
-### Weather Data
-Requires: `herbie-data`, `xarray`, `pytz`
-```python
-if pdt.HRRRAccumulatedPrecipitationDownloader is not None:
-    downloader = pdt.HRRRAccumulatedPrecipitationDownloader(...)
-else:
-    print("Install with: pip install permeabledt[weather]")
-```
-
-### Plotting
-Requires: `matplotlib`
-```python
-if pdt.plots is not None:
-    pdt.plots.plot_rainfall_hydrograph(...)
-else:
-    print("Install with: pip install permeabledt[plots]")
-```
-
-## Version Information
-
-```python
-import permeabledt as pdt
-print(f"permeabledt version: {pdt.__version__}")
-```
-
-## Detailed Module Documentation
-
-- **[Core Water Flow API](water_flow.md)** - Complete water flow function reference
-- **[Calibration API](calibration.md)** - Parameter optimization functions
-- **[Particle Filter API](particle_filtering.md)** - Real-time forecasting classes
-- **[Weather Data API](weather_data.md)** - HRRR data integration
-- **[Plotting API](plotting.md)** - Visualization functions
+Refer to the module-specific pages linked above for full parameter tables and
+usage notes.
