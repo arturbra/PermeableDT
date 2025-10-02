@@ -1,6 +1,6 @@
 # Calibration API
 
-Complete reference for parameter calibration and optimization functions in permeabledt.
+Complete reference for parameter calibration and optimization functions in PermeableDT.
 
 ## Overview
 

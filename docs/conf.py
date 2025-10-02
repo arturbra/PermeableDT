@@ -10,8 +10,8 @@ sys.path.insert(0, os.path.abspath('..'))
 
 # -- Project information -----------------------------------------------------
 project = 'permeabledt'
-copyright = '2024, permeabledt Development Team'
-author = 'permeabledt Development Team'
+copyright = '2025, Jose Brasil'
+author = 'Jose Brasil'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
