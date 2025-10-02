@@ -13,6 +13,31 @@
 - 🌦️ **Weather Data Integration**: HRRR forecast data downloading and processing
 - 📊 **Visualization**: Built-in plotting functions for results analysis
 
+## Installation
+
+### Requirements
+- **Python** ≥ 3.8  
+- Base dependencies are installed automatically (`numpy`, `pandas`).  
+- Optional feature groups (install with extras):
+  - `calib` → genetic algorithm calibration (`deap`, `scikit-learn`)
+  - `pf` → particle filtering (`pypfilt`, `scipy`, `tomlkit`)
+  - `plots` → plotting (`matplotlib`)
+  - `weather` → HRRR downloads (`herbie-data`, `xarray`, `pytz`)
+  - `all` → everything above
+
+---
+
+### Install from PyPI (recommended)
+
+```bash
+pip install permeabledt
+# or with optional features:
+pip install "permeabledt[all]"
+# examples:
+pip install "permeabledt[calib]"
+pip install "permeabledt[pf]"
+pip install "permeabledt[plots]"
+pip install "permeabledt[weather]"
 
 ### Manual Installation
 
